@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1, h2 {
+            font-weight: bold;
+            font-size: 32px;
+        }
+        label, #level {
+            font-weight: bold;
+            font-size: 24px;
+        }
+        textarea {
+            width: 100%;
+            font-size: 24px;
+        }
+        button {
+            font-size: 24px;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        #level {
+            font-size: 28px;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text Prediction</h1>
+    <form id="predict-form">
+        <label for="text">Text:</label><br>
+        <textarea id="text" name="text" rows="6" cols="80"></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Level:</h2>
+    <p id="level"></p>
+
+    <script>
+        document.getElementById('predict-form').onsubmit = function(event) {
+            event.preventDefault();
+            var text = document.getElementById('text').value;
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'text=' + encodeURIComponent(text)
+            }).then(response => response.json()).then(data => {
+                document.getElementById('level').textContent = data.level;
+            });
+        };
+    </script>
+</body>
+</html>
